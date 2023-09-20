@@ -1,0 +1,92 @@
+#This inventory I have created in the control system and pinging modules in the remote system
+#1st stage
+
+#host
+web1 ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+
+
+
+
+command:
+$ ansible web1 -i inventory -m ping
+=====================================================================================
+#2nd stage
+
+#host
+web1 ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+
+#group
+[webservers]
+web1
+
+
+command:
+$ ansible webservers -i inventory -m ping
+======================================================================================
+#3rd stage
+
+
+#host
+web1 ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+db1 ansible_ssh_host=192.168.33.30 ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+#group
+[webservers]
+web1
+db1
+
+command:
+$ ansible webservers -i inventory -m ping
+
+======================================================================================
+#4th stage
+
+
+#host
+web1 ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+db1 ansible_ssh_host=192.168.33.30 ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+
+#group
+[webservers]
+web1
+
+[dbservers]
+db1
+
+#Parent group
+[datacenters:children]
+webservers
+dbservers
+
+command:
+$ ansible datacenters -i inventory -m ping
+======================================================================================
+#5th stage
+
+#host
+web1 ansible_ssh_host=192.168.33.20 
+db1 ansible_ssh_host=192.168.33.30 
+
+#group
+[webservers]
+web1
+
+[dbservers]
+db1
+
+#Parent group
+[datacenters:children]
+webservers
+dbservers
+
+#variable group
+[datacenters:vars]
+ansible_ssh_user=vagrant 
+ansible_ssh_pass=vagrant
+
+
+command:
+$ ansible datacenters -i inventory -m ping
+
+==========================================================================================
+
+
